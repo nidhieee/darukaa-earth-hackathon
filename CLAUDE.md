@@ -17,3 +17,12 @@ This is a full-stack geospatial dashboard for carbon/biodiversity projects.
 - `docs/`: Project documentation
 
 Read the relevant files in `docs/` for specific module instructions.
+
+## Non-negotiable requirements checklist
+- [x] End-to-end authentication (login/register via API)
+- [x] Project and Site creation
+- [x] Map view with polygon drawing (mapbox-gl-draw)
+- [x] Site detail analytics chart (Chart.js)
+
+## Progress Log
+- **2026-09-17**: Implemented FastAPI backend and React frontend. Created auth flow, project/site management, map drawing, and analytics charts. Backend and frontend are fully integrated and working.
