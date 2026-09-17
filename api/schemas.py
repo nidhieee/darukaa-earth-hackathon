@@ -32,6 +32,7 @@ class AnalyticsOut(BaseModel):
 
 class SiteOut(BaseModel):
     id: uuid.UUID
+    project_id: uuid.UUID
     name: str
     area_hectares: float
     carbon_estimate_tons: float

@@ -30,14 +30,18 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     const data = await authApi.login(email, password);
-    setToken(data.access_token);
     localStorage.setItem('token', data.access_token);
+    setToken(data.access_token);
+    const userData = await authApi.getMe();
+    setUser(userData);
   };
 
   const register = async (email, password) => {
     const data = await authApi.register(email, password);
-    setToken(data.access_token);
     localStorage.setItem('token', data.access_token);
+    setToken(data.access_token);
+    const userData = await authApi.getMe();
+    setUser(userData);
   };
 
   const logout = () => {
