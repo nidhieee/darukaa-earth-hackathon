@@ -10,6 +10,27 @@ A full-stack platform for managing and visualizing carbon and biodiversity proje
 
 ---
 
+## 0. Project Overview & Requirements Coverage
+
+This platform lets an administrator register/log in, create a **Project**, draw one or more **Sites** as polygons on an interactive map, and click into any site to see its area, an automatically computed carbon estimate, a health-status indicator, and a time-series chart of its analytics history.
+
+Every core user story from the challenge brief is implemented and live:
+
+| User story | How it's met |
+|---|---|
+| *"As an administrator, I want to create a new project and add multiple geographical sites to it."* | Dashboard → **Create New Project** (2-step wizard: project details, then draw one or more site polygons directly on the map before saving). |
+| *"As an administrator, I want to view all projects and sites on an interactive map."* | Dashboard lists all projects; each project opens a Mapbox map showing every site as a colored polygon (color = health status), fit to bounds automatically. |
+| *"As an administrator, I want to click on a specific site to view detailed analytics and performance over time."* | Clicking any site (from the map or the sidebar list) opens its detail page: area, carbon estimate, health badge, and a Chart.js line chart of carbon/biodiversity trends over time. |
+
+And every Key Feature:
+- **User Authentication** — JWT-based register/login, implemented from scratch on the backend (not a third-party auth provider).
+- **Project Management** — full create/view flow; project name and description are also editable after creation.
+- **Geospatial Data** — polygons drawn client-side with `mapbox-gl-draw`, stored server-side as native PostGIS geometry.
+- **Data Visualization** — Chart.js time-series per site, plus color-coded health status on the map for an at-a-glance overview across all sites.
+- **Automated Code Quality Check** — pre-commit hooks (Husky+lint-staged, pre-commit+black+flake8) and GitHub Actions CI; see §6.
+
+---
+
 ## 1. High-Level Architecture
 
 ```
@@ -151,11 +172,32 @@ A unified script exists at the repo root (`npm run dev`, using `concurrently`) t
 Both were verified by intentionally introducing a formatting/lint violation and confirming the commit was correctly blocked/auto-fixed before being allowed through.
 
 ### GitHub Actions (`.github/workflows/ci.yml`)
-Runs on every `push` and `pull_request`:
-- **`frontend` job**: installs dependencies and runs `npm run build`, catching any build-breaking errors.
-- **`backend` job**: installs dependencies and runs `flake8` across `/api`, catching lint violations that may have slipped past local hooks.
+Runs on every `push` and `pull_request`, with two independent jobs:
 
-This gives a second, server-side enforcement layer independent of any individual contributor's local hook setup.
+```yaml
+name: CI
+on: [push, pull_request]
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: cd web && npm install && npm run build
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: cd api && pip install -r requirements.txt && pip install flake8 && flake8 . --max-line-length=88
+```
+
+- **`frontend` job**: installs dependencies and runs `npm run build`, catching any build-breaking errors before they can reach `main`.
+- **`backend` job**: installs dependencies and runs `flake8` across `/api` with the same line-length configuration as the local pre-commit hook, catching lint violations that may have slipped past a contributor's local setup.
+
+This gives a second, server-side enforcement layer independent of any individual contributor's local hooks — a hook can be skipped locally (`--no-verify`), but CI cannot be bypassed the same way and is visible directly on every commit/PR in the GitHub Actions tab.
 
 ### Deployment
 - **Backend** → Render.com, auto-deploying from the `main` branch. Build: `pip install -r api/requirements.txt`. Start: `uvicorn api.main:app --host 0.0.0.0 --port $PORT`.
