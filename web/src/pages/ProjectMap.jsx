@@ -29,7 +29,6 @@ export default function ProjectMap() {
       setError(null);
       const projects = await getProjects();
       const proj = projects.find((p) => p.id === id);
-      console.log("[DEBUG] Fetched projectData:", proj); // Temporary log to confirm fields
       setProject(proj);
     } catch (err) {
       console.error(err);

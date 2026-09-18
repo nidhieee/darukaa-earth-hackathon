@@ -4,7 +4,7 @@ import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import toast from "react-hot-toast";
 import GlareHover from "../components/GlareHover";
-import GradientWaves from "../components/GradientWaves";
+import Grainient from "../components/Grainient";
 import ErrorBoundary from "../components/shared/ErrorBoundary";
 import logo from "../lib/logo-removebg.png";
 
@@ -16,6 +16,7 @@ export default function AuthPage() {
   const [mode, setMode] = useState(initialMode);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const { login, register, user } = useAuth();
@@ -32,6 +33,11 @@ export default function AuthPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    if (!isLogin && password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
 
     const action = isLogin ? login(email, password) : register(email, password);
     const msgs = isLogin
@@ -74,28 +80,7 @@ export default function AuthPage() {
         }
       >
         <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-          <GradientWaves
-            horizonColor="#a3fad3ff"
-            waveColor="#32c46eff"
-            crestColor="#1e7442ff"
-            speed={0.2}
-            amplitude={2.5}
-            waveScale={0.8}
-            waveRatio={0.9}
-            swell={20}
-            turbulence={5}
-            tilt={1.2}
-            zoom={1.0}
-            height={5}
-            fogDepth={12}
-            detail="low"
-            brightness={0.4}
-            opacity={0.95}
-            mouseInteraction={false}
-            parallaxStrength={0.1}
-            grain={false}
-            grainIntensity={0}
-          />
+          <Grainient color1="#0f3d28" color2="#1e8449" color3="#a8e063" />
         </div>
       </ErrorBoundary>
 
@@ -229,6 +214,50 @@ export default function AuthPage() {
                 </button>
               </div>
             </div>
+
+            {!isLogin && (
+              <div className="form-group" style={{ marginBottom: "24px" }}>
+                <label style={{ fontSize: "15px", marginBottom: "8px" }}>
+                  Confirm Password
+                </label>
+                <div style={{ position: "relative" }}>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    style={{
+                      minHeight: "44px",
+                      fontSize: "16px",
+                      padding: "12px 48px 12px 16px",
+                      width: "100%",
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((v) => !v)}
+                    style={{
+                      position: "absolute",
+                      right: "14px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      color: "var(--color-text-muted)",
+                      display: "flex",
+                      alignItems: "center",
+                      padding: 0,
+                    }}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+              </div>
+            )}
 
             <GlareHover style={{ width: "100%" }}>
               <button

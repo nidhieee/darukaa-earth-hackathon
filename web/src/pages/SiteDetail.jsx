@@ -19,7 +19,6 @@ export default function SiteDetail() {
     try {
       setError(null);
       const siteData = await getSite(id);
-      console.log("[DEBUG] Fetched siteData:", siteData); // Temporary log to confirm fields
       setSite(siteData);
       setAnalytics(siteData.analytics || []);
     } catch (err) {
@@ -147,7 +146,7 @@ export default function SiteDetail() {
             Analytics Trend
           </h3>
           <div style={{ flex: 1, minHeight: "300px" }}>
-            <SiteChart data={analytics} />
+            <SiteChart analytics={analytics} />
           </div>
         </div>
         <div
