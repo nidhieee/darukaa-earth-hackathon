@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getSite, getSiteAnalytics } from "../api/sites";
+import { getSite } from "../api/sites";
 import HealthBadge from "../components/shared/HealthBadge";
 import SiteChart from "../components/dashboard/SiteChart";
 import MapView from "../components/map/MapView";
@@ -18,12 +18,10 @@ export default function SiteDetail() {
   const loadData = async () => {
     try {
       setError(null);
-      const [siteData, analyticsData] = await Promise.all([
-        getSite(id),
-        getSiteAnalytics(id),
-      ]);
+      const siteData = await getSite(id);
+      console.log("[DEBUG] Fetched siteData:", siteData); // Temporary log to confirm fields
       setSite(siteData);
-      setAnalytics(analyticsData);
+      setAnalytics(siteData.analytics || []);
     } catch (err) {
       console.error(err);
       if (err.code === "ERR_NETWORK" || !err.response) {
