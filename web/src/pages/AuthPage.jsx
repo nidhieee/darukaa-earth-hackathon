@@ -4,7 +4,6 @@ import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import toast from "react-hot-toast";
 import GlareHover from "../components/GlareHover";
-import GradientWaves from "../components/GradientWaves";
 import ErrorBoundary from "../components/shared/ErrorBoundary";
 import logo from "../lib/logo-removebg.png";
 
@@ -79,30 +78,7 @@ export default function AuthPage() {
           />
         }
       >
-        <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-          <GradientWaves
-            horizonColor="#a3fad3ff"
-            waveColor="#32c46eff"
-            crestColor="#1e7442ff"
-            speed={0.2}
-            amplitude={2.5}
-            waveScale={0.8}
-            waveRatio={0.9}
-            swell={20}
-            turbulence={5}
-            tilt={1.2}
-            zoom={1.0}
-            height={5}
-            fogDepth={12}
-            detail="low"
-            brightness={0.4}
-            opacity={0.95}
-            mouseInteraction={false}
-            parallaxStrength={0.1}
-            grain={false}
-            grainIntensity={0}
-          />
-        </div>
+        <div className="glowing-gradient-bg"></div>
       </ErrorBoundary>
 
       <div
