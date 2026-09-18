@@ -19,7 +19,6 @@ export default function SiteDetail() {
     try {
       setError(null);
       const siteData = await getSite(id);
-      console.log("[DEBUG] Fetched siteData:", siteData); // Temporary log to confirm fields
       setSite(siteData);
       setAnalytics(siteData.analytics || []);
     } catch (err) {
