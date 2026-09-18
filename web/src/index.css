@@ -148,6 +148,13 @@ a:hover { text-decoration: underline; }
   transform: translateX(3px);
 }
 
+.back-icon {
+  transition: transform 0.2s ease;
+}
+.back-btn:hover .back-icon {
+  transform: translateX(-3px);
+}
+
 .form-group { margin-bottom: 16px; }
 .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-primary); }
 .form-group input { 

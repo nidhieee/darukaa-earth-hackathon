@@ -33,6 +33,7 @@ class Site(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     project_id = Column(UUID(as_uuid=True), ForeignKey("projects.id"), nullable=False)
     name = Column(String, nullable=False)
+    description = Column(String, nullable=True)
     geom = Column(Geometry('POLYGON', srid=4326), nullable=False)
     area_hectares = Column(Float, nullable=False)
     carbon_estimate_tons = Column(Float, nullable=False)

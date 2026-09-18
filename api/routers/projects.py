@@ -6,7 +6,7 @@ from shapely.geometry import shape
 
 from ..database import get_db
 from ..models import Project, Site
-from ..schemas import ProjectCreate, ProjectOut, SiteCreate, SiteOut
+from ..schemas import ProjectCreate, ProjectOut, ProjectUpdate, SiteCreate, SiteOut
 from ..auth.utils import get_current_user
 from ..models import User
 from ..config import settings
@@ -32,6 +32,31 @@ def get_projects(db: Session = Depends(get_db), current_user: User = Depends(get
             
     return projects
 
+@router.patch("/{project_id}", response_model=ProjectOut)
+def update_project(project_id: str, project_update: ProjectUpdate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    project = db.query(Project).filter(Project.id == project_id, Project.owner_id == current_user.id).first()
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    if project_update.name is not None:
+        project.name = project_update.name
+    if project_update.description is not None:
+        project.description = project_update.description
+        
+    db.commit()
+    db.refresh(project)
+    return project
+
+@router.delete("/{project_id}")
+def delete_project(project_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    project = db.query(Project).filter(Project.id == project_id, Project.owner_id == current_user.id).first()
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+        
+    db.delete(project)
+    db.commit()
+    return {"detail": "Project deleted"}
+
 @router.post("/{project_id}/sites", response_model=SiteOut)
 def create_site(project_id: str, site: SiteCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     project = db.query(Project).filter(Project.id == project_id, Project.owner_id == current_user.id).first()
@@ -55,6 +80,7 @@ def create_site(project_id: str, site: SiteCreate, db: Session = Depends(get_db)
     new_site = Site(
         project_id=project.id,
         name=site.name,
+        description=site.description,
         geom=geom_wkt,
         area_hectares=area_hectares,
         carbon_estimate_tons=carbon_estimate_tons,

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getProjects } from '../api/projects';
+import { createSite, updateSite, deleteSite } from '../api/sites';
 import MapView from '../components/map/MapView';
 import HealthBadge from '../components/shared/HealthBadge';
 import { motion } from 'framer-motion';
@@ -8,12 +9,19 @@ import { ArrowLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
 import GlareHover from '../components/GlareHover';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
+import NameSiteModal from '../components/shared/NameSiteModal';
+import ActionMenu from '../components/shared/ActionMenu';
+import EditModal from '../components/shared/EditModal';
+import ConfirmDeleteModal from '../components/shared/ConfirmDeleteModal';
 
 export default function ProjectMap() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [pendingSiteGeojson, setPendingSiteGeojson] = useState(null);
+  const [editingSite, setEditingSite] = useState(null);
+  const [deletingSite, setDeletingSite] = useState(null);
 
   const loadProject = async () => {
     try {
@@ -32,16 +40,42 @@ export default function ProjectMap() {
   }, [id]);
 
   const handleSiteDrawn = async (geojson) => {
-    const siteName = window.prompt("Enter a name for this new site:");
-    if (!siteName) return;
+    setPendingSiteGeojson(geojson);
+  };
 
+  const handleSaveSite = async ({ name, description }) => {
     try {
-      await createSite(id, { name: siteName, geom: geojson });
-      loadProject(); 
-      toast.success('Site saved');
+      await createSite(id, { name, description, geom: pendingSiteGeojson });
+      setPendingSiteGeojson(null);
+      toast.success('Site created successfully');
+      loadProject();
     } catch (err) {
-      console.error('Failed to create site', err);
-      toast.error('Failed to save site');
+      console.error(err);
+      toast.error('Failed to create site');
+    }
+  };
+
+  const handleEditSave = async (data) => {
+    try {
+      await updateSite(editingSite.id, data);
+      toast.success('Site updated');
+      setEditingSite(null);
+      loadProject();
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to update site');
+    }
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      await deleteSite(deletingSite.id);
+      toast.success('Site deleted');
+      setDeletingSite(null);
+      loadProject();
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to delete site');
     }
   };
 
@@ -53,9 +87,19 @@ export default function ProjectMap() {
       
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <button onClick={() => navigate('/dashboard')} style={{ background: 'transparent', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', color: 'var(--color-primary)' }}>
-            <ArrowLeft size={24} />
-          </button>
+          <GlareHover background="var(--color-primary)" style={{ borderRadius: '50%' }}>
+            <button 
+              onClick={() => navigate('/dashboard')} 
+              style={{ 
+                width: '40px', height: '40px', borderRadius: '50%', background: 'transparent', 
+                border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', 
+                justifyContent: 'center', color: 'white', padding: 0 
+              }}
+              className="back-btn"
+            >
+              <ArrowLeft size={20} className="back-icon" />
+            </button>
+          </GlareHover>
           <div>
             <h2 style={{ color: 'var(--color-primary)', margin: '0 0 8px 0' }}>{project.name}</h2>
             <p style={{ margin: 0, color: 'var(--color-text-muted)' }}>Use the polygon tool on the map to draw new sites.</p>
@@ -83,11 +127,15 @@ export default function ProjectMap() {
                 transition={{ duration: 0.2, delay: index * 0.05 }}
                 key={site.id} 
                 className="card" 
-                style={{ cursor: 'pointer', padding: '16px', marginBottom: '16px' }}
+                style={{ cursor: 'pointer', padding: '16px', marginBottom: '16px', position: 'relative' }}
                 onClick={() => navigate(`/sites/${site.id}`)}
                 whileHover={{ scale: 1.01, boxShadow: '0 8px 12px rgba(0, 0, 0, 0.1)' }}
               >
-                <div className="flex-row" style={{ justifyContent: 'space-between', marginBottom: '12px' }}>
+                <ActionMenu 
+                  onEdit={() => setEditingSite(site)} 
+                  onDelete={() => setDeletingSite(site)} 
+                />
+                <div className="flex-row" style={{ justifyContent: 'space-between', marginBottom: '12px', paddingRight: '24px' }}>
                   <h4 style={{ margin: 0, color: 'var(--color-primary)' }}>{site.name}</h4>
                   <HealthBadge score={site.health_score} />
                 </div>
@@ -100,6 +148,31 @@ export default function ProjectMap() {
           )}
         </div>
       </div>
+
+      {pendingSiteGeojson && (
+        <NameSiteModal 
+          onSave={handleSaveSite} 
+          onCancel={() => setPendingSiteGeojson(null)} 
+        />
+      )}
+
+      {editingSite && (
+        <EditModal 
+          title="Edit Site"
+          initialName={editingSite.name}
+          initialDescription={editingSite.description}
+          onSave={handleEditSave}
+          onCancel={() => setEditingSite(null)}
+        />
+      )}
+
+      {deletingSite && (
+        <ConfirmDeleteModal 
+          itemName={deletingSite.name}
+          onConfirm={handleDeleteConfirm}
+          onCancel={() => setDeletingSite(null)}
+        />
+      )}
     </div>
   );
 }

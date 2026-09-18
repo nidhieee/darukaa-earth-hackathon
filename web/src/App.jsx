@@ -5,11 +5,7 @@ import { LogOut, User, Plus } from 'lucide-react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Toaster } from 'react-hot-toast';
 import ProtectedRoute from './components/auth/ProtectedRoute';
-import AuthPage from './pages/AuthPage';
-import Dashboard from './pages/Dashboard';
-import CreateProjectWizard from './pages/CreateProjectWizard';
-import ProjectMap from './pages/ProjectMap';
-import SiteDetail from './pages/SiteDetail';
+import AppRoutes from './routes';
 import GlareHover from './components/GlareHover';
 import LoadingSpinner from './components/shared/LoadingSpinner';
 import logo from './lib/logo-removebg.png';
@@ -31,8 +27,6 @@ function Navigation() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
   
-  if (!user) return null;
-
   useEffect(() => {
     const handleOnline = () => { toast.dismiss('offline'); toast.success('Back online'); };
     const handleOffline = () => toast.error('You are offline', { duration: Infinity, id: 'offline' });
@@ -44,6 +38,8 @@ function Navigation() {
       window.removeEventListener('offline', handleOffline);
     };
   }, []);
+
+  if (!user) return null;
 
   const handleLogout = () => {
     logout();
@@ -145,7 +141,36 @@ function AppContent() {
   return (
     <>
       <Navigation />
-      <Toaster position="top-right" />
+      <Toaster 
+        position="top-center"
+        toastOptions={{
+          style: {
+            borderRadius: 'var(--radius)',
+            fontFamily: 'inherit',
+            fontSize: '14px',
+            fontWeight: '500',
+            color: 'white',
+          },
+          success: {
+            style: {
+              background: 'var(--color-primary)',
+            },
+            iconTheme: {
+              primary: 'var(--color-accent-lime)',
+              secondary: 'var(--color-primary)',
+            },
+          },
+          error: {
+            style: {
+              background: '#DC2626',
+            },
+            iconTheme: {
+              primary: 'white',
+              secondary: '#DC2626',
+            },
+          }
+        }} 
+      />
       <AnimatePresence mode="wait">
         <motion.div
           key={location.pathname}
@@ -155,15 +180,7 @@ function AppContent() {
           transition={{ duration: 0.2 }}
           style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}
         >
-          <Routes location={location}>
-            <Route path="/" element={<AuthPage />} />
-            <Route path="/login" element={<AuthPage />} />
-            <Route path="/register" element={<AuthPage />} />
-            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/projects/new" element={<ProtectedRoute><CreateProjectWizard /></ProtectedRoute>} />
-            <Route path="/projects/:id/map" element={<ProtectedRoute><ProjectMap /></ProtectedRoute>} />
-            <Route path="/sites/:id" element={<ProtectedRoute><SiteDetail /></ProtectedRoute>} />
-          </Routes>
+          <AppRoutes location={location} />
         </motion.div>
       </AnimatePresence>
       {location.pathname !== '/' && location.pathname !== '/login' && location.pathname !== '/register' && (

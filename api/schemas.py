@@ -21,7 +21,12 @@ class Token(BaseModel):
 # Site
 class SiteCreate(BaseModel):
     name: str
+    description: Optional[str] = None
     geom: Dict[str, Any] # GeoJSON polygon geometry
+
+class SiteUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
 
 class AnalyticsOut(BaseModel):
     id: uuid.UUID
@@ -34,6 +39,7 @@ class SiteOut(BaseModel):
     id: uuid.UUID
     project_id: uuid.UUID
     name: str
+    description: Optional[str] = None
     area_hectares: float
     carbon_estimate_tons: float
     health_score: str
@@ -50,6 +56,10 @@ class SiteGeoJSON(BaseModel):
 # Project
 class ProjectCreate(BaseModel):
     name: str
+    description: Optional[str] = None
+
+class ProjectUpdate(BaseModel):
+    name: Optional[str] = None
     description: Optional[str] = None
 
 class ProjectOut(BaseModel):

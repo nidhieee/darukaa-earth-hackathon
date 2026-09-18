@@ -7,14 +7,16 @@ import { createProject } from '../api/projects';
 import { createSite } from '../api/sites';
 import MapView from '../components/map/MapView';
 import GlareHover from '../components/GlareHover';
+import NameSiteModal from '../components/shared/NameSiteModal';
 
 export default function CreateProjectWizard() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [sites, setSites] = useState([]); // Array of { name, geom }
+  const [sites, setSites] = useState([]); // Array of { name, description, geom }
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [pendingSiteGeojson, setPendingSiteGeojson] = useState(null);
 
   const handleNext = () => {
     if (!name.trim()) {
@@ -25,9 +27,12 @@ export default function CreateProjectWizard() {
   };
 
   const handleSiteDrawn = (geojson) => {
-    const siteName = window.prompt("Enter a name for this new site:");
-    if (!siteName) return;
-    setSites([...sites, { name: siteName, geom: geojson }]);
+    setPendingSiteGeojson(geojson);
+  };
+
+  const handleSaveSite = ({ name, description }) => {
+    setSites([...sites, { name, description, geom: pendingSiteGeojson }]);
+    setPendingSiteGeojson(null);
     toast.success('Site added to queue');
   };
 
@@ -39,7 +44,7 @@ export default function CreateProjectWizard() {
       
       // 2. Create sites
       for (const site of sites) {
-        await createSite(project.id, { name: site.name, geom: site.geom });
+        await createSite(project.id, { name: site.name, description: site.description, geom: site.geom });
       }
       
       toast.success('Project and sites created successfully!');
@@ -54,9 +59,19 @@ export default function CreateProjectWizard() {
   return (
     <div className="main-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <button onClick={() => navigate('/dashboard')} style={{ background: 'transparent', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', color: 'var(--color-primary)' }}>
-          <ArrowLeft size={24} />
-        </button>
+        <GlareHover background="var(--color-primary)" style={{ borderRadius: '50%' }}>
+          <button 
+            onClick={() => navigate('/dashboard')} 
+            style={{ 
+              width: '40px', height: '40px', borderRadius: '50%', background: 'transparent', 
+              border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', 
+              justifyContent: 'center', color: 'white', padding: 0 
+            }}
+            className="back-btn"
+          >
+            <ArrowLeft size={20} className="back-icon" />
+          </button>
+        </GlareHover>
         <div>
           <h2 style={{ color: 'var(--color-primary)', margin: '0 0 8px 0' }}>Create New Project</h2>
           <p style={{ color: 'var(--color-text-muted)', margin: 0 }}>
@@ -108,6 +123,13 @@ export default function CreateProjectWizard() {
             />
           </div>
         </motion.div>
+      )}
+
+      {pendingSiteGeojson && (
+        <NameSiteModal 
+          onSave={handleSaveSite} 
+          onCancel={() => setPendingSiteGeojson(null)} 
+        />
       )}
     </div>
   );

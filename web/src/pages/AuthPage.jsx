@@ -29,49 +29,47 @@ export default function AuthPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    
+    const action = isLogin ? login(email, password) : register(email, password);
+    const msgs = isLogin 
+      ? { loading: 'Logging in...', success: 'Login successful', error: 'Invalid email or password' }
+      : { loading: 'Creating account...', success: 'Account created', error: 'Registration failed. Email might be in use.' };
+
     try {
-      if (isLogin) {
-        await login(email, password);
-        toast.success('Login successful');
-      } else {
-        await register(email, password);
-        toast.success('Account created');
-      }
+      await toast.promise(action, msgs);
       navigate('/dashboard');
     } catch (err) {
-      const errorMsg = mode === 'login' ? 'Invalid email or password' : 'Registration failed. Email might be in use.';
-      setError(errorMsg);
-      toast.error(errorMsg);
+      setError(msgs.error);
     }
   };
 
   const isLogin = mode === 'login';
 
   return (
-    <div className="auth-page-wrapper" style={{ position: 'relative' }}>
-      <ErrorBoundary fallback={<div style={{ position: 'absolute', inset: 0, zIndex: 0, background: 'radial-gradient(circle at 50% 30%, #175031 0%, #081a10 100%)' }} />}>
+    <div className="auth-page-wrapper" style={{ position: 'relative', backgroundColor: 'var(--color-primary)' }}>
+      <ErrorBoundary fallback={<div style={{ position: 'absolute', inset: 0, zIndex: 0, backgroundColor: 'var(--color-primary)' }} />}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
           <GradientWaves 
-            horizonColor="#0F3D28"
-            waveColor="#1E8449"
-            crestColor="#A8E063"
-            speed={0.3}
-            amplitude={2}
-            waveScale={0.6}
+            horizonColor="#a3fad3ff"
+            waveColor="#32c46eff"
+            crestColor="#1e7442ff"
+            speed={0.2}
+            amplitude={2.5}
+            waveScale={0.8}
             waveRatio={0.9}
-            swell={30}
-            turbulence={15}
-            tilt={1.1}
+            swell={20}
+            turbulence={5}
+            tilt={1.2}
             zoom={1.0}
             height={5}
-            fogDepth={14}
-            detail="medium"
-            brightness={0.9}
+            fogDepth={12}
+            detail="low"
+            brightness={0.4}
             opacity={0.95}
-            mouseInteraction={true}
-            parallaxStrength={0.3}
-            grain={true}
-            grainIntensity={0.04}
+            mouseInteraction={false}
+            parallaxStrength={0.1}
+            grain={false}
+            grainIntensity={0}
           />
         </div>
       </ErrorBoundary>
@@ -95,10 +93,11 @@ export default function AuthPage() {
             top: '6px',
             bottom: '6px',
             width: 'calc(50% - 6px)',
-            left: isLogin ? '6px' : '50%',
+            left: '6px',
+            transform: isLogin ? 'translateX(0)' : 'translateX(100%)',
             background: 'var(--color-accent-lime)',
             borderRadius: '9999px',
-            transition: 'left 0.3s ease',
+            transition: 'transform 400ms cubic-bezier(0.4, 0, 0.2, 1)',
             zIndex: 0
           }} />
 
