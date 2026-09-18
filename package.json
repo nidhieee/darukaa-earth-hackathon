@@ -1,0 +1,13 @@
+{
+  "name": "darukaa-earth-hackathon",
+  "version": "1.0.0",
+  "description": "Darukaa Earth Hackathon Project",
+  "scripts": {
+    "dev": "concurrently -n API,WEB -c blue,green \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:api": "cd api && ../.venv/Scripts/python -m uvicorn main:app --reload --port 8000",
+    "dev:web": "cd web && npm run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}
