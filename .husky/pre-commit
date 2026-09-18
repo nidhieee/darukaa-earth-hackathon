@@ -1,0 +1,4 @@
+#!/bin/sh
+cd web && npx lint-staged
+cd ..
+.venv/Scripts/pre-commit run

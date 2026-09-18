@@ -23,6 +23,9 @@ Read the relevant files in `docs/` for specific module instructions.
 - [x] Project and Site creation
 - [x] Map view with polygon drawing (mapbox-gl-draw)
 - [x] Site detail analytics chart (Chart.js)
+- [x] Automated code quality check
+- [x] Pre-commit hooks
+- [x] GitHub Actions CI/CD
 
 ## Progress Log
 - **2026-09-17**: Implemented FastAPI backend and React frontend. Created auth flow, project/site management, map drawing, and analytics charts. Backend and frontend are fully integrated and working.

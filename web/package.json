@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky"
   },
   "dependencies": {
     "@mapbox/mapbox-gl-draw": "^1.4.3",
@@ -26,6 +27,15 @@
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@vitejs/plugin-react": "^4.2.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.9.8",
     "vite": "^5.0.0"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,css}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   }
 }
