@@ -8,4 +8,4 @@ passlib[bcrypt]
 python-jose[cryptography]
 shapely
 pydantic[email]
-bcrypt==4.0.1
+
