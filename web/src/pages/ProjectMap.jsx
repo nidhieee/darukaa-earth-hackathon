@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { getProjects } from "../api/projects";
 import { createSite, updateSite, deleteSite } from "../api/sites";
-import MapView from "../components/map/MapView";
+import MapView from "../components/map/ProjectMapView";
 import HealthBadge from "../components/shared/HealthBadge";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
