@@ -254,17 +254,55 @@ a:hover {
   gap: 24px;
 }
 
+/* True Responsive Flex Layouts */
+.project-map-layout {
+  flex-wrap: wrap;
+}
+.project-map-layout > div:first-child {
+  flex: 1 1 400px !important;
+  min-height: 400px;
+}
+.project-map-layout > div:last-child {
+  flex: 1 1 350px !important;
+  max-width: 100% !important;
+}
+
+.site-detail-bottom {
+  flex-wrap: wrap;
+}
+.site-detail-bottom > div {
+  flex: 1 1 400px !important;
+  max-width: 100% !important;
+}
+
+.site-detail-stats {
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.site-detail-stats > div[style*="width: 1px"] {
+  display: none !important;
+}
+
+.page-header-row {
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.site-detail-header {
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* Base Mobile Overrides */
 @media (max-width: 768px) {
-  /* Navbar: keep logo + controls on one line, reduce padding */
   .navbar {
     padding: 12px 16px;
     gap: 8px;
+    flex-wrap: wrap;
   }
   .navbar > div:last-child {
     gap: 12px !important;
   }
 
-  /* Auth page: full-width card with side margin, never overflow */
   .auth-page-wrapper {
     padding: 16px !important;
     align-items: center;
@@ -274,93 +312,16 @@ a:hover {
     padding: 24px 20px !important;
   }
 
-  /* Main content padding reduction */
   .main-content {
     padding: 20px 16px;
   }
 
-  /* Dashboard: single column, full-width cards */
-  .projects-grid {
-    grid-template-columns: 1fr !important;
-    gap: 16px;
-  }
-
-  /* ProjectMap: stack map on top, site list below */
-  .project-map-layout {
-    flex-direction: column !important;
-    height: auto !important;
-    gap: 16px !important;
-  }
-  .project-map-layout > div {
-    flex: none !important;
-    width: 100% !important;
-  }
-  /* Map gets a fixed height on mobile */
-  .project-map-layout > div:first-child {
-    height: 55vw !important;
-    min-height: 260px !important;
-    max-height: 380px !important;
-  }
-  /* Site list panel: no fixed height, natural scroll */
-  .project-map-layout > div:last-child {
-    overflow-y: visible !important;
-    padding-right: 0 !important;
-  }
-
-  /* Map container height override */
-  .map-container {
-    height: 100% !important;
-    min-height: unset !important;
-  }
-
-  /* SiteDetail: stat cards stack vertically */
-  .site-detail-stats {
-    flex-direction: column !important;
-    gap: 20px !important;
-    padding: 20px !important;
-  }
-  .site-detail-stats > div[style*="width: 1px"] {
-    width: 100% !important;
-    height: 1px !important;
-    align-self: unset !important;
-  }
-
-  /* SiteDetail: chart + minimap stack vertically, no horizontal overflow */
-  .site-detail-bottom {
-    flex-direction: column !important;
-    gap: 16px !important;
-  }
-  .site-detail-bottom > div[style*="width: 400px"],
-  .site-detail-bottom > div[style*="flex: 1"] {
-    width: 100% !important;
-    flex: none !important;
-  }
-
-  /* Chart must not overflow */
   .chart-container {
-    height: 280px;
-    width: 100% !important;
-    overflow: hidden;
+    height: 300px;
   }
 
-  /* Wizard: step 2 map usable height */
   .wizard-map-container {
-    min-height: 320px !important;
-  }
-
-  /* Flex rows that break on small screens */
-  .site-detail-header {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 12px !important;
-  }
-
-  /* Back button header row on ProjectMap / Wizard — prevent title overflow */
-  .page-header-row {
-    gap: 12px !important;
-  }
-  .page-header-row h2 {
-    font-size: 20px !important;
+    min-height: 400px !important;
   }
 }
 
@@ -374,6 +335,9 @@ a:hover {
   }
   .main-content {
     padding: 16px 12px;
+  }
+  .nav-btn-text {
+    display: none;
   }
 }
 
