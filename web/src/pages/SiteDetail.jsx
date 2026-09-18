@@ -77,7 +77,7 @@ export default function SiteDetail() {
   return (
     <div className="main-content">
       <div
-        className="flex-row"
+        className="flex-row site-detail-header"
         style={{ marginBottom: "32px", justifyContent: "space-between" }}
       >
         <div className="flex-row" style={{ alignItems: "center" }}>
@@ -137,7 +137,10 @@ export default function SiteDetail() {
         </div>
       </div>
 
-      <div style={{ display: "flex", gap: "24px", flex: 1, minHeight: 0 }}>
+      <div
+        className="site-detail-bottom"
+        style={{ display: "flex", gap: "24px", flex: 1, minHeight: 0 }}
+      >
         <div
           className="card"
           style={{ flex: 1, display: "flex", flexDirection: "column" }}

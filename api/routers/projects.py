@@ -5,7 +5,7 @@ from sqlalchemy import text
 from shapely.geometry import shape
 
 from ..database import get_db
-from ..models import Project, Site
+from ..models import Project, Site, AnalyticsSnapshot
 from ..schemas import ProjectCreate, ProjectOut, ProjectUpdate, SiteCreate, SiteOut
 from ..auth.utils import get_current_user
 from ..models import User
@@ -82,6 +82,16 @@ def delete_project(
     )
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
+
+    # Explicitly delete children to avoid FK constraint violations
+    site_ids = [site.id for site in project.sites]
+    if site_ids:
+        db.query(AnalyticsSnapshot).filter(
+            AnalyticsSnapshot.site_id.in_(site_ids)
+        ).delete(synchronize_session=False)
+        db.query(Site).filter(Site.project_id == project.id).delete(
+            synchronize_session=False
+        )
 
     db.delete(project)
     db.commit()

@@ -1,18 +1,18 @@
 :root {
-  --color-primary: #0F3D28;
-  --color-brand: #1E8449;
-  --color-brand-hover: #27A85A;
-  --color-accent-lime: #A8E063;
-  --color-accent-light: #95D5B2;
-  --color-bg: #F7F9F7;
-  --color-surface: #FFFFFF;
-  --color-text: #14251C;
-  --color-text-muted: #5B6B62;
-  --color-health-green: #40916C;
-  --color-health-yellow: #EAB308;
-  --color-health-red: #DC2626;
+  --color-primary: #0f3d28;
+  --color-brand: #1e8449;
+  --color-brand-hover: #27a85a;
+  --color-accent-lime: #a8e063;
+  --color-accent-light: #95d5b2;
+  --color-bg: #f7f9f7;
+  --color-surface: #ffffff;
+  --color-text: #14251c;
+  --color-text-muted: #5b6b62;
+  --color-health-green: #40916c;
+  --color-health-yellow: #eab308;
+  --color-health-red: #dc2626;
   --radius: 10px;
-  --shadow-card: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 ::-webkit-scrollbar {
@@ -38,9 +38,16 @@ body {
   background-color: var(--color-bg);
 }
 
-* { box-sizing: border-box; }
-a { text-decoration: none; color: var(--color-brand); }
-a:hover { text-decoration: underline; }
+* {
+  box-sizing: border-box;
+}
+a {
+  text-decoration: none;
+  color: var(--color-brand);
+}
+a:hover {
+  text-decoration: underline;
+}
 
 .app-container {
   display: flex;
@@ -63,10 +70,11 @@ a:hover { text-decoration: underline; }
   padding: 16px 32px;
   background-color: var(--color-surface);
   border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.nav-links a, .nav-links button {
+.nav-links a,
+.nav-links button {
   margin-left: 24px;
   color: var(--color-text-muted);
   background: none;
@@ -76,7 +84,8 @@ a:hover { text-decoration: underline; }
   font-weight: 500;
   text-decoration: none;
 }
-.nav-links a:hover, .nav-links button:hover {
+.nav-links a:hover,
+.nav-links button:hover {
   color: var(--color-brand);
 }
 
@@ -97,16 +106,30 @@ a:hover { text-decoration: underline; }
   cursor: pointer;
   font-weight: 500;
   font-size: 15px;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
   text-decoration: none;
   display: inline-block;
   position: relative;
   z-index: 2;
 }
-.btn:hover { color: white; text-decoration: none; }
-.btn-secondary { background-color: var(--color-primary); }
-.btn-outline { background: transparent; border: 1px solid var(--color-text-muted); color: var(--color-text-muted); }
-.btn-outline:hover { background: #f3f4f6; color: var(--color-text); }
+.btn:hover {
+  color: white;
+  text-decoration: none;
+}
+.btn-secondary {
+  background-color: var(--color-primary);
+}
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--color-text-muted);
+  color: var(--color-text-muted);
+}
+.btn-outline:hover {
+  background: #f3f4f6;
+  color: var(--color-text);
+}
 
 .glare-hover-container .btn {
   background-color: transparent !important;
@@ -155,15 +178,24 @@ a:hover { text-decoration: underline; }
   transform: translateX(-3px);
 }
 
-.form-group { margin-bottom: 16px; }
-.form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-primary); }
-.form-group input { 
-  width: 100%; 
-  padding: 10px 12px; 
-  border: 1px solid #d1d5db; 
-  border-radius: var(--radius); 
+.form-group {
+  margin-bottom: 16px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--color-primary);
+}
+.form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: var(--radius);
   background: white;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .form-group input:focus {
   outline: none;
@@ -175,7 +207,9 @@ a:hover { text-decoration: underline; }
   background: white;
   border-radius: var(--radius);
   padding: 24px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
   border: 1px solid #f3f4f6;
   transition: box-shadow 0.2s ease;
 }
@@ -188,7 +222,7 @@ a:hover { text-decoration: underline; }
   transition: color 0.2s ease;
 }
 .nav-link-animated::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 100%;
   transform: scaleX(0);
@@ -203,8 +237,16 @@ a:hover { text-decoration: underline; }
   transform: scaleX(1);
 }
 
-.error-text { color: var(--color-health-red); margin-bottom: 16px; font-size: 14px; }
-.flex-row { display: flex; gap: 16px; align-items: center; }
+.error-text {
+  color: var(--color-health-red);
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+.flex-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
 
 .projects-grid {
   display: grid;
@@ -213,40 +255,125 @@ a:hover { text-decoration: underline; }
 }
 
 @media (max-width: 768px) {
+  /* Navbar: keep logo + controls on one line, reduce padding */
   .navbar {
-    flex-wrap: wrap;
+    padding: 12px 16px;
+    gap: 8px;
+  }
+  .navbar > div:last-child {
+    gap: 12px !important;
+  }
+
+  /* Auth page: full-width card with side margin, never overflow */
+  .auth-page-wrapper {
+    padding: 16px !important;
+    align-items: center;
+  }
+  .auth-card {
+    max-width: 100% !important;
+    padding: 24px 20px !important;
+  }
+
+  /* Main content padding reduction */
+  .main-content {
+    padding: 20px 16px;
+  }
+
+  /* Dashboard: single column, full-width cards */
+  .projects-grid {
+    grid-template-columns: 1fr !important;
     gap: 16px;
-    justify-content: center;
   }
-  .nav-links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-  }
-  .nav-links a, .nav-links button, .nav-email {
-    margin-left: 0 !important;
-  }
-  
+
+  /* ProjectMap: stack map on top, site list below */
   .project-map-layout {
     flex-direction: column !important;
     height: auto !important;
+    gap: 16px !important;
   }
   .project-map-layout > div {
     flex: none !important;
+    width: 100% !important;
   }
+  /* Map gets a fixed height on mobile */
+  .project-map-layout > div:first-child {
+    height: 55vw !important;
+    min-height: 260px !important;
+    max-height: 380px !important;
+  }
+  /* Site list panel: no fixed height, natural scroll */
+  .project-map-layout > div:last-child {
+    overflow-y: visible !important;
+    padding-right: 0 !important;
+  }
+
+  /* Map container height override */
   .map-container {
-    height: 400px !important;
-    min-height: 400px !important;
+    height: 100% !important;
+    min-height: unset !important;
   }
-  
+
+  /* SiteDetail: stat cards stack vertically */
   .site-detail-stats {
     flex-direction: column !important;
-    gap: 24px;
+    gap: 20px !important;
+    padding: 20px !important;
   }
-  .site-detail-divider {
+  .site-detail-stats > div[style*="width: 1px"] {
     width: 100% !important;
     height: 1px !important;
+    align-self: unset !important;
+  }
+
+  /* SiteDetail: chart + minimap stack vertically, no horizontal overflow */
+  .site-detail-bottom {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+  .site-detail-bottom > div[style*="width: 400px"],
+  .site-detail-bottom > div[style*="flex: 1"] {
+    width: 100% !important;
+    flex: none !important;
+  }
+
+  /* Chart must not overflow */
+  .chart-container {
+    height: 280px;
+    width: 100% !important;
+    overflow: hidden;
+  }
+
+  /* Wizard: step 2 map usable height */
+  .wizard-map-container {
+    min-height: 320px !important;
+  }
+
+  /* Flex rows that break on small screens */
+  .site-detail-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  /* Back button header row on ProjectMap / Wizard — prevent title overflow */
+  .page-header-row {
+    gap: 12px !important;
+  }
+  .page-header-row h2 {
+    font-size: 20px !important;
+  }
+}
+
+/* Extra-small (iPhone SE, 375px) */
+@media (max-width: 400px) {
+  .auth-card {
+    padding: 20px 14px !important;
+  }
+  .navbar {
+    padding: 10px 12px;
+  }
+  .main-content {
+    padding: 16px 12px;
   }
 }
 

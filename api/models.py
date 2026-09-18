@@ -27,7 +27,7 @@ class Project(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     owner = relationship("User", back_populates="projects")
-    sites = relationship("Site", back_populates="project")
+    sites = relationship("Site", back_populates="project", cascade="all, delete-orphan")
 
 
 class Site(Base):
@@ -44,7 +44,9 @@ class Site(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     project = relationship("Project", back_populates="sites")
-    analytics = relationship("AnalyticsSnapshot", back_populates="site")
+    analytics = relationship(
+        "AnalyticsSnapshot", back_populates="site", cascade="all, delete-orphan"
+    )
 
 
 class AnalyticsSnapshot(Base):

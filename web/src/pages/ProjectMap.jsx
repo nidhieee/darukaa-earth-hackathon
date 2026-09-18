@@ -126,6 +126,7 @@ export default function ProjectMap() {
       style={{ display: "flex", flexDirection: "column", height: "100%" }}
     >
       <div
+        className="page-header-row"
         style={{
           display: "flex",
           justifyContent: "space-between",
@@ -134,30 +135,26 @@ export default function ProjectMap() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          <GlareHover
-            background="var(--color-primary)"
-            style={{ borderRadius: "50%" }}
+          <button
+            onClick={() => navigate("/dashboard")}
+            style={{
+              width: "40px",
+              height: "40px",
+              borderRadius: "50%",
+              background: "var(--color-primary)",
+              border: "none",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "white",
+              padding: 0,
+              flexShrink: 0,
+            }}
+            className="back-btn"
           >
-            <button
-              onClick={() => navigate("/dashboard")}
-              style={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "50%",
-                background: "transparent",
-                border: "none",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "white",
-                padding: 0,
-              }}
-              className="back-btn"
-            >
-              <ArrowLeft size={20} className="back-icon" />
-            </button>
-          </GlareHover>
+            <ArrowLeft size={20} className="back-icon" />
+          </button>
           <div>
             <h2 style={{ color: "var(--color-primary)", margin: "0 0 8px 0" }}>
               {project.name}
