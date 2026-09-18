@@ -3,10 +3,12 @@ from typing import List, Optional, Any, Dict
 from datetime import datetime, date
 import uuid
 
+
 # User
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
+
 
 class UserOut(BaseModel):
     id: uuid.UUID
@@ -14,19 +16,23 @@ class UserOut(BaseModel):
     created_at: datetime
     model_config = ConfigDict(from_attributes=True)
 
+
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
+
 
 # Site
 class SiteCreate(BaseModel):
     name: str
     description: Optional[str] = None
-    geom: Dict[str, Any] # GeoJSON polygon geometry
+    geom: Dict[str, Any]  # GeoJSON polygon geometry
+
 
 class SiteUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
+
 
 class AnalyticsOut(BaseModel):
     id: uuid.UUID
@@ -34,6 +40,7 @@ class AnalyticsOut(BaseModel):
     carbon_tons: float
     biodiversity_index: float
     model_config = ConfigDict(from_attributes=True)
+
 
 class SiteOut(BaseModel):
     id: uuid.UUID
@@ -44,23 +51,27 @@ class SiteOut(BaseModel):
     carbon_estimate_tons: float
     health_score: str
     created_at: datetime
-    geom: Any = None 
+    geom: Any = None
     analytics: List[AnalyticsOut] = []
     model_config = ConfigDict(from_attributes=True)
+
 
 class SiteGeoJSON(BaseModel):
     type: str = "Feature"
     geometry: Dict[str, Any]
     properties: Dict[str, Any]
 
+
 # Project
 class ProjectCreate(BaseModel):
     name: str
     description: Optional[str] = None
 
+
 class ProjectUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
+
 
 class ProjectOut(BaseModel):
     id: uuid.UUID
