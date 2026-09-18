@@ -4,8 +4,9 @@ sqlalchemy
 geoalchemy2
 psycopg2-binary
 pydantic-settings
-passlib[bcrypt]
+bcrypt
 python-jose[cryptography]
 shapely
 pydantic[email]
+
 

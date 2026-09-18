@@ -1,4 +1,4 @@
-from passlib.context import CryptContext
+import bcrypt
 from jose import JWTError, jwt
 from datetime import datetime, timedelta, timezone
 from fastapi import Depends, HTTPException, status
@@ -8,16 +8,19 @@ from ..config import settings
 from ..database import get_db
 from ..models import User
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 security = HTTPBearer()
 
 
 def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
+    # bcrypt has a 72-byte limit; truncate defensively
+    password_bytes = password.encode("utf-8")[:72]
+    hashed = bcrypt.hashpw(password_bytes, bcrypt.gensalt())
+    return hashed.decode("utf-8")
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+    password_bytes = plain_password.encode("utf-8")[:72]
+    return bcrypt.checkpw(password_bytes, hashed_password.encode("utf-8"))
 
 
 def create_access_token(user_id: str):
