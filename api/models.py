@@ -5,6 +5,7 @@ from sqlalchemy.orm import relationship
 from geoalchemy2 import Geometry
 from .database import Base
 
+
 class User(Base):
     __tablename__ = "users"
 
@@ -14,6 +15,7 @@ class User(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     projects = relationship("Project", back_populates="owner")
+
 
 class Project(Base):
     __tablename__ = "projects"
@@ -27,13 +29,15 @@ class Project(Base):
     owner = relationship("User", back_populates="projects")
     sites = relationship("Site", back_populates="project")
 
+
 class Site(Base):
     __tablename__ = "sites"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     project_id = Column(UUID(as_uuid=True), ForeignKey("projects.id"), nullable=False)
     name = Column(String, nullable=False)
-    geom = Column(Geometry('POLYGON', srid=4326), nullable=False)
+    description = Column(String, nullable=True)
+    geom = Column(Geometry("POLYGON", srid=4326), nullable=False)
     area_hectares = Column(Float, nullable=False)
     carbon_estimate_tons = Column(Float, nullable=False)
     health_score = Column(String, nullable=False, default="yellow")
@@ -41,6 +45,7 @@ class Site(Base):
 
     project = relationship("Project", back_populates="sites")
     analytics = relationship("AnalyticsSnapshot", back_populates="site")
+
 
 class AnalyticsSnapshot(Base):
     __tablename__ = "analytics_snapshots"

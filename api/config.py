@@ -2,6 +2,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import List
 
+
 class Settings(BaseSettings):
     DATABASE_URL: str
     JWT_SECRET: str
@@ -11,7 +12,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env.local",
         env_file_encoding="utf-8",
-        extra="ignore",  # ignore VITE_* and other frontend-only vars in the same .env.local
+        extra="ignore",  # ignore VITE_* vars in same file
     )
+
 
 settings = Settings()
