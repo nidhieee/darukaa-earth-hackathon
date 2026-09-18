@@ -380,30 +380,76 @@ a:hover {
   }
 }
 
-.glowing-gradient-bg {
+.aurora-container {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: linear-gradient(
-    0deg,
-    #0f3d28,
-    #1e8449,
-    #40916c,
-    #95d5b2,
-    #a8e063
-  );
-  background-size: 100% 400%;
-  animation: gradientFlowUp 12s ease-in-out infinite;
+  background-color: #020604; /* Deep space black/green */
+  overflow: hidden;
 }
 
-@keyframes gradientFlowUp {
+.planet-surface {
+  position: absolute;
+  bottom: -40vh; /* Push the circle down so only the top curve is visible */
+  left: -20vw;
+  right: -20vw;
+  height: 80vh;
+  background-color: #040d08;
+  border-radius: 50%;
+  box-shadow:
+    0 -10px 40px rgba(0, 0, 0, 0.8),
+    inset 0 20px 40px rgba(30, 132, 73, 0.1);
+  z-index: 2;
+}
+
+.aurora-glow {
+  position: absolute;
+  bottom: 30vh; /* Rest right above the planet curve */
+  left: -50vw;
+  right: -50vw;
+  height: 60vh;
+  background: linear-gradient(
+    0deg,
+    rgba(64, 145, 108, 0) 0%,
+    rgba(168, 224, 99, 0.8) 50%,
+    rgba(30, 132, 73, 0) 100%
+  );
+  filter: blur(60px);
+  opacity: 0.7;
+  z-index: 1;
+  animation: auroraShift 8s ease-in-out infinite alternate;
+  transform-origin: bottom center;
+}
+
+@keyframes auroraShift {
   0% {
-    background-position: 50% 100%;
+    transform: translateY(0) scaleY(1) skewX(-15deg);
+    opacity: 0.5;
+    background: linear-gradient(
+      0deg,
+      rgba(64, 145, 108, 0) 0%,
+      rgba(168, 224, 99, 0.9) 50%,
+      rgba(30, 132, 73, 0) 100%
+    );
   }
   50% {
-    background-position: 50% 0%;
+    transform: translateY(-5vh) scaleY(1.2) skewX(5deg);
+    opacity: 0.8;
+    background: linear-gradient(
+      0deg,
+      rgba(64, 145, 108, 0) 0%,
+      rgba(149, 213, 178, 1) 50%,
+      rgba(30, 132, 73, 0) 100%
+    );
   }
   100% {
-    background-position: 50% 100%;
+    transform: translateY(2vh) scaleY(0.9) skewX(15deg);
+    opacity: 0.6;
+    background: linear-gradient(
+      0deg,
+      rgba(64, 145, 108, 0) 0%,
+      rgba(30, 132, 73, 0.8) 50%,
+      rgba(30, 132, 73, 0) 100%
+    );
   }
 }

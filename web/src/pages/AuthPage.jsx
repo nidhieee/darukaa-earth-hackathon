@@ -78,7 +78,10 @@ export default function AuthPage() {
           />
         }
       >
-        <div className="glowing-gradient-bg"></div>
+        <div className="aurora-container">
+          <div className="aurora-glow"></div>
+          <div className="planet-surface"></div>
+        </div>
       </ErrorBoundary>
 
       <div
