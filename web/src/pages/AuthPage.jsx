@@ -4,7 +4,7 @@ import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import toast from "react-hot-toast";
 import GlareHover from "../components/GlareHover";
-import Aurora from "../components/Aurora";
+import Grainient from "../components/Grainient";
 import ErrorBoundary from "../components/shared/ErrorBoundary";
 import logo from "../lib/logo-removebg.png";
 
@@ -80,12 +80,7 @@ export default function AuthPage() {
         }
       >
         <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-          <Aurora
-            colorStops={['#0f3d28', '#1e8449', '#a8e063']}
-            amplitude={1.2}
-            blend={0.5}
-            speed={0.5}
-          />
+          <Grainient color1="#0f3d28" color2="#1e8449" color3="#a8e063" />
         </div>
       </ErrorBoundary>
 
