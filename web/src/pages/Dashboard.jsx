@@ -1,18 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useState, useEffect } from 'react';
 import { getProjects, createProject } from '../api/projects';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import GlareHover from '../components/GlareHover';
+import LoadingSpinner from '../components/shared/LoadingSpinner';
 
 export default function Dashboard() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  const [showModal, setShowModal] = useState(false);
-  const [newProjectName, setNewProjectName] = useState('');
-  const [newProjectDesc, setNewProjectDesc] = useState('');
 
   const loadProjects = async () => {
     try {
@@ -27,27 +24,9 @@ export default function Dashboard() {
 
   useEffect(() => {
     loadProjects();
-    const handleOpenModal = () => setShowModal(true);
-    window.addEventListener('open-new-project-modal', handleOpenModal);
-    return () => window.removeEventListener('open-new-project-modal', handleOpenModal);
   }, []);
 
-  const handleCreate = async (e) => {
-    e.preventDefault();
-    try {
-      await createProject({ name: newProjectName, description: newProjectDesc });
-      setShowModal(false);
-      setNewProjectName('');
-      setNewProjectDesc('');
-      loadProjects();
-      toast.success('Project created');
-    } catch (err) {
-      console.error(err);
-      toast.error('Failed to create project');
-    }
-  };
-
-  if (loading) return <div className="main-content">Loading projects...</div>;
+  if (loading) return <div className="main-content"><LoadingSpinner text="Loading projects..." /></div>;
 
   return (
     <div className="main-content">
@@ -55,27 +34,6 @@ export default function Dashboard() {
         <h2 style={{ color: 'var(--color-primary)', margin: 0 }}>My Projects</h2>
       </div>
 
-      {showModal && (
-        <div className="card" style={{ marginBottom: '32px' }}>
-          <h3 style={{ color: 'var(--color-primary)', marginTop: 0 }}>Create New Project</h3>
-          <form onSubmit={handleCreate}>
-            <div className="form-group">
-              <label>Name</label>
-              <input value={newProjectName} onChange={e => setNewProjectName(e.target.value)} required />
-            </div>
-            <div className="form-group">
-              <label>Description</label>
-              <input value={newProjectDesc} onChange={e => setNewProjectDesc(e.target.value)} />
-            </div>
-            <div className="flex-row" style={{ marginTop: '24px' }}>
-              <GlareHover>
-                <button type="submit" className="btn">Create</button>
-              </GlareHover>
-              <motion.button whileTap={{ scale: 0.97 }} type="button" className="btn btn-outline" onClick={() => setShowModal(false)}>Cancel</motion.button>
-            </div>
-          </form>
-        </div>
-      )}
 
       {projects.length === 0 ? (
         <p style={{ color: 'var(--color-text-muted)' }}>No projects yet. Create one to get started.</p>

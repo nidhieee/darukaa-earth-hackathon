@@ -4,8 +4,10 @@ import { getProjects } from '../api/projects';
 import MapView from '../components/map/MapView';
 import HealthBadge from '../components/shared/HealthBadge';
 import { motion } from 'framer-motion';
+import { ArrowLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
 import GlareHover from '../components/GlareHover';
+import LoadingSpinner from '../components/shared/LoadingSpinner';
 
 export default function ProjectMap() {
   const { id } = useParams();
@@ -43,19 +45,22 @@ export default function ProjectMap() {
     }
   };
 
-  if (loading) return <div className="main-content">Loading...</div>;
+  if (loading) return <div className="main-content"><LoadingSpinner text="Loading project..." /></div>;
   if (!project) return <div className="main-content">Project not found.</div>;
 
   return (
-    <div className="main-content" style={{ maxWidth: '100%', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 70px)' }}>
-      <div className="flex-row" style={{ marginBottom: '16px', justifyContent: 'space-between', flexShrink: 0 }}>
-        <div>
-          <h2 style={{ color: 'var(--color-primary)', margin: '0 0 8px 0' }}>{project.name}</h2>
-          <p style={{ margin: 0, color: 'var(--color-text-muted)' }}>Use the polygon tool on the map to draw new sites.</p>
+    <div className="main-content" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <button onClick={() => navigate('/dashboard')} style={{ background: 'transparent', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px', color: 'var(--color-primary)' }}>
+            <ArrowLeft size={24} />
+          </button>
+          <div>
+            <h2 style={{ color: 'var(--color-primary)', margin: '0 0 8px 0' }}>{project.name}</h2>
+            <p style={{ margin: 0, color: 'var(--color-text-muted)' }}>Use the polygon tool on the map to draw new sites.</p>
+          </div>
         </div>
-        <GlareHover>
-          <Link to="/dashboard" className="btn">Back to Dashboard</Link>
-        </GlareHover>
       </div>
       
       <div className="project-map-layout" style={{ display: 'flex', gap: '24px', flex: 1, minHeight: 0 }}>

@@ -7,9 +7,11 @@ import { Toaster } from 'react-hot-toast';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import AuthPage from './pages/AuthPage';
 import Dashboard from './pages/Dashboard';
+import CreateProjectWizard from './pages/CreateProjectWizard';
 import ProjectMap from './pages/ProjectMap';
 import SiteDetail from './pages/SiteDetail';
 import GlareHover from './components/GlareHover';
+import LoadingSpinner from './components/shared/LoadingSpinner';
 import logo from './lib/logo-removebg.png';
 
 function Navigation() {
@@ -31,38 +33,37 @@ function Navigation() {
   
   if (!user) return null;
 
+  useEffect(() => {
+    const handleOnline = () => { toast.dismiss('offline'); toast.success('Back online'); };
+    const handleOffline = () => toast.error('You are offline', { duration: Infinity, id: 'offline' });
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    if (!navigator.onLine) handleOffline();
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
-  const handleNewProject = () => {
-    if (location.pathname !== '/dashboard') {
-      navigate('/dashboard');
-      setTimeout(() => window.dispatchEvent(new Event('open-new-project-modal')), 100);
-    } else {
-      window.dispatchEvent(new Event('open-new-project-modal'));
-    }
-  };
-
   return (
     <nav className="navbar" style={{ position: 'relative', zIndex: 50, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-        <img src={logo} alt="Darukaa.Earth Logo" style={{ height: '36px', width: 'auto' }} />
+      <Link to={user ? "/dashboard" : "/"} style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+        <img src={logo} alt="Darukaa.Earth Logo" style={{ height: '32px' }} />
       </Link>
-      <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-        {location.pathname !== '/dashboard' && (
-          <Link to="/dashboard" className="nav-link-animated">Dashboard</Link>
-        )}
-        
-        <GlareHover background="var(--color-primary)" style={{ width: '40px', height: '40px', borderRadius: '50%' }}>
+      
+      <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+        <GlareHover background="var(--color-primary)" style={{ borderRadius: '9999px' }}>
           <button 
-            title="New Project"
-            onClick={handleNewProject} 
+            onClick={() => navigate('/projects/new')} 
             className="btn" 
-            style={{ width: '100%', height: '100%', padding: 0, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            style={{ width: '100%', height: '100%', padding: '8px 16px', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: 'transparent', border: 'none', color: 'white' }}
           >
-            <Plus size={20} />
+            <Plus size={16} /> Add Project
           </button>
         </GlareHover>
         
@@ -88,7 +89,7 @@ function Navigation() {
                 style={{
                   position: 'absolute', top: 'calc(100% + 8px)', right: 0,
                   background: 'white', borderRadius: 'var(--radius)', boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
-                  padding: '20px', minWidth: '240px', zIndex: 100,
+                  padding: '20px', width: '280px', boxSizing: 'border-box', zIndex: 100,
                   border: '1px solid #e5e7eb'
                 }}
               >
@@ -98,14 +99,14 @@ function Navigation() {
                 <p style={{ margin: '0 0 16px 0', color: 'var(--color-text-muted)', fontSize: '14px', wordBreak: 'break-all', position: 'relative', zIndex: 2 }}>
                   {user.email}
                 </p>
-                <div className="logout-btn-container" style={{ width: '100%' }}>
+                <div className="logout-btn-container" style={{ width: '100%', boxSizing: 'border-box' }}>
                   <motion.button 
                     whileTap={{ scale: 0.97 }}
                     onClick={handleLogout}
                     style={{
                       width: '100%', boxSizing: 'border-box', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                       background: '#DC2626', color: 'white', border: 'none', padding: '10px 16px',
-                      borderRadius: '9999px', cursor: 'pointer', fontWeight: '500', fontSize: '15px'
+                      borderRadius: '9999px', cursor: 'pointer', fontWeight: '500', fontSize: '15px', margin: 0
                     }}
                     className="logout-btn"
                   >
@@ -136,7 +137,7 @@ function AppContent() {
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', background: 'var(--color-bg)' }}>
-        <p style={{ color: 'var(--color-primary)', fontSize: '18px', fontWeight: '500' }}>Loading...</p>
+        <LoadingSpinner text="Authenticating..." />
       </div>
     );
   }
@@ -159,6 +160,7 @@ function AppContent() {
             <Route path="/login" element={<AuthPage />} />
             <Route path="/register" element={<AuthPage />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/projects/new" element={<ProtectedRoute><CreateProjectWizard /></ProtectedRoute>} />
             <Route path="/projects/:id/map" element={<ProtectedRoute><ProjectMap /></ProtectedRoute>} />
             <Route path="/sites/:id" element={<ProtectedRoute><SiteDetail /></ProtectedRoute>} />
           </Routes>
@@ -173,7 +175,7 @@ function AppContent() {
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <AuthProvider>
         <div className="app-container">
           <AppContent />

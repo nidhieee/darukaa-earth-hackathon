@@ -1,36 +1,55 @@
-import { motion } from 'framer-motion';
+import './GlareHover.css';
 
-export default function GlareHover({ children, background = 'var(--color-primary)', borderRadius = '9999px', style = {}, className = '' }) {
+const GlareHover = ({
+  width = 'auto',
+  height = 'auto',
+  background = 'var(--color-primary)',
+  borderRadius = '9999px',
+  borderColor = 'transparent',
+  children,
+  glareColor = '#ffffff',
+  glareOpacity = 0.25,
+  glareAngle = 105,
+  glareSize = 250,
+  transitionDuration = 500,
+  playOnce = false,
+  className = '',
+  style = {}
+}) => {
+  const hex = glareColor.replace('#', '');
+  let rgba = glareColor;
+  if (/^[0-9A-Fa-f]{6}$/.test(hex)) {
+    const r = parseInt(hex.slice(0, 2), 16);
+    const g = parseInt(hex.slice(2, 4), 16);
+    const b = parseInt(hex.slice(4, 6), 16);
+    rgba = `rgba(${r}, ${g}, ${b}, ${glareOpacity})`;
+  } else if (/^[0-9A-Fa-f]{3}$/.test(hex)) {
+    const r = parseInt(hex[0] + hex[0], 16);
+    const g = parseInt(hex[1] + hex[1], 16);
+    const b = parseInt(hex[2] + hex[2], 16);
+    rgba = `rgba(${r}, ${g}, ${b}, ${glareOpacity})`;
+  }
+
+  const vars = {
+    '--gh-width': width,
+    '--gh-height': height,
+    '--gh-bg': background,
+    '--gh-br': borderRadius,
+    '--gh-angle': `${glareAngle}deg`,
+    '--gh-duration': `${transitionDuration}ms`,
+    '--gh-size': `${glareSize}%`,
+    '--gh-rgba': rgba,
+    '--gh-border': borderColor
+  };
+
   return (
-    <motion.div
-      whileTap={{ scale: 0.97 }}
-      style={{
-        position: 'relative',
-        overflow: 'hidden',
-        background,
-        borderRadius,
-        display: 'inline-block',
-        ...style
-      }}
-      className={`glare-hover-container ${className}`}
+    <div
+      className={`glare-hover ${playOnce ? 'glare-hover--play-once' : ''} ${className}`}
+      style={{ ...vars, ...style }}
     >
       {children}
-      <motion.div
-        className="glare-effect"
-        initial={{ x: '-100%' }}
-        whileHover={{ x: '150%' }}
-        transition={{ duration: 0.5, ease: 'easeInOut' }}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          background: 'linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.25) 50%, transparent 80%)',
-          pointerEvents: 'none',
-          zIndex: 10
-        }}
-      />
-    </motion.div>
+    </div>
   );
-}
+};
+
+export default GlareHover;

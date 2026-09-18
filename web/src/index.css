@@ -12,23 +12,20 @@
   --color-health-yellow: #EAB308;
   --color-health-red: #DC2626;
   --radius: 10px;
-  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
 }
 
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
-
 ::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.03);
 }
-
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, var(--color-primary), var(--color-brand));
   border-radius: 9999px;
 }
-
 html {
   scrollbar-color: var(--color-brand) rgba(0, 0, 0, 0.03);
   scrollbar-width: thin;
@@ -41,18 +38,9 @@ body {
   background-color: var(--color-bg);
 }
 
-* {
-  box-sizing: border-box;
-}
-
-a {
-  text-decoration: none;
-  color: var(--color-brand);
-}
-
-a:hover {
-  text-decoration: underline;
-}
+* { box-sizing: border-box; }
+a { text-decoration: none; color: var(--color-brand); }
+a:hover { text-decoration: underline; }
 
 .app-container {
   display: flex;
@@ -75,11 +63,10 @@ a:hover {
   padding: 16px 32px;
   background-color: var(--color-surface);
   border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
-.nav-links a,
-.nav-links button {
+.nav-links a, .nav-links button {
   margin-left: 24px;
   color: var(--color-text-muted);
   background: none;
@@ -89,9 +76,7 @@ a:hover {
   font-weight: 500;
   text-decoration: none;
 }
-
-.nav-links a:hover,
-.nav-links button:hover {
+.nav-links a:hover, .nav-links button:hover {
   color: var(--color-brand);
 }
 
@@ -118,26 +103,10 @@ a:hover {
   position: relative;
   z-index: 2;
 }
-
-.btn:hover {
-  color: white;
-  text-decoration: none;
-}
-
-.btn-secondary {
-  background-color: var(--color-primary);
-}
-
-.btn-outline {
-  background: transparent;
-  border: 1px solid var(--color-text-muted);
-  color: var(--color-text-muted);
-}
-
-.btn-outline:hover {
-  background: #f3f4f6;
-  color: var(--color-text);
-}
+.btn:hover { color: white; text-decoration: none; }
+.btn-secondary { background-color: var(--color-primary); }
+.btn-outline { background: transparent; border: 1px solid var(--color-text-muted); color: var(--color-text-muted); }
+.btn-outline:hover { background: #f3f4f6; color: var(--color-text); }
 
 .glare-hover-container .btn {
   background-color: transparent !important;
@@ -149,7 +118,6 @@ a:hover {
 }
 
 .auth-page-wrapper {
-  background: radial-gradient(circle at 50% 30%, #175031 0%, #081a10 100%);
   height: 100dvh;
   max-height: 100dvh;
   overflow: hidden;
@@ -172,38 +140,24 @@ a:hover {
   font-weight: 600;
   font-size: 16px;
   cursor: pointer;
-  transition: color 0.3s, background-color 0.2s;
+  transition: color 0.3s;
   border-radius: 9999px;
-}
-
-.auth-tab-btn:hover {
-  background-color: rgba(168, 224, 99, 0.2);
 }
 
 .logout-btn:hover .logout-icon {
   transform: translateX(3px);
 }
 
-.form-group {
-  margin-bottom: 16px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: var(--color-primary);
-}
-
-.form-group input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: var(--radius);
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--color-primary); }
+.form-group input { 
+  width: 100%; 
+  padding: 10px 12px; 
+  border: 1px solid #d1d5db; 
+  border-radius: var(--radius); 
   background: white;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-
 .form-group input:focus {
   outline: none;
   border-color: var(--color-brand);
@@ -226,7 +180,6 @@ a:hover {
   font-weight: 500;
   transition: color 0.2s ease;
 }
-
 .nav-link-animated::after {
   content: '';
   position: absolute;
@@ -239,22 +192,12 @@ a:hover {
   transform-origin: bottom left;
   transition: transform 0.2s ease-out;
 }
-
 .nav-link-animated:hover::after {
   transform: scaleX(1);
 }
 
-.error-text {
-  color: var(--color-health-red);
-  margin-bottom: 16px;
-  font-size: 14px;
-}
-
-.flex-row {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
+.error-text { color: var(--color-health-red); margin-bottom: 16px; font-size: 14px; }
+.flex-row { display: flex; gap: 16px; align-items: center; }
 
 .projects-grid {
   display: grid;
@@ -268,39 +211,32 @@ a:hover {
     gap: 16px;
     justify-content: center;
   }
-
   .nav-links {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 12px;
   }
-
-  .nav-links a,
-  .nav-links button,
-  .nav-email {
+  .nav-links a, .nav-links button, .nav-email {
     margin-left: 0 !important;
   }
-
+  
   .project-map-layout {
     flex-direction: column !important;
     height: auto !important;
   }
-
-  .project-map-layout>div {
+  .project-map-layout > div {
     flex: none !important;
   }
-
   .map-container {
     height: 400px !important;
     min-height: 400px !important;
   }
-
+  
   .site-detail-stats {
     flex-direction: column !important;
     gap: 24px;
   }
-
   .site-detail-divider {
     width: 100% !important;
     height: 1px !important;
