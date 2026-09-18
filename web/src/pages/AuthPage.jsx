@@ -16,6 +16,7 @@ export default function AuthPage() {
   const [mode, setMode] = useState(initialMode);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const { login, register, user } = useAuth();
@@ -32,6 +33,11 @@ export default function AuthPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    if (!isLogin && password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
 
     const action = isLogin ? login(email, password) : register(email, password);
     const msgs = isLogin
@@ -229,6 +235,50 @@ export default function AuthPage() {
                 </button>
               </div>
             </div>
+
+            {!isLogin && (
+              <div className="form-group" style={{ marginBottom: "24px" }}>
+                <label style={{ fontSize: "15px", marginBottom: "8px" }}>
+                  Confirm Password
+                </label>
+                <div style={{ position: "relative" }}>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    style={{
+                      minHeight: "44px",
+                      fontSize: "16px",
+                      padding: "12px 48px 12px 16px",
+                      width: "100%",
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((v) => !v)}
+                    style={{
+                      position: "absolute",
+                      right: "14px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      color: "var(--color-text-muted)",
+                      display: "flex",
+                      alignItems: "center",
+                      padding: 0,
+                    }}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+              </div>
+            )}
 
             <GlareHover style={{ width: "100%" }}>
               <button

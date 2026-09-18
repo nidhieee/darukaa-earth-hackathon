@@ -146,7 +146,7 @@ export default function SiteDetail() {
             Analytics Trend
           </h3>
           <div style={{ flex: 1, minHeight: "300px" }}>
-            <SiteChart data={analytics} />
+            <SiteChart analytics={analytics} />
           </div>
         </div>
         <div
